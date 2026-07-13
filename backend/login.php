@@ -1,4 +1,6 @@
 <?php
+// login script
+
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
@@ -14,6 +16,7 @@ $data = json_decode(file_get_contents("php://input"), true);
 $email = $data["email"] ?? '';
 $password = $data["password"] ?? '';
 
+// if fields are not filled
 if (!$email || !$password) {
   echo json_encode(["error" => "Missing email or password"]);
   exit;
@@ -24,6 +27,7 @@ $stmt->bind_param("s", $email);
 $stmt->execute();
 $result = $stmt->get_result();
 
+// if email not found
 if ($result->num_rows === 0) {
   echo json_encode(["error" => "User not found"]);
   exit;
@@ -31,6 +35,7 @@ if ($result->num_rows === 0) {
 
 $user = $result->fetch_assoc();
 
+// check password with stored password using password_verify
 if (!password_verify($password, $user["password"])) {
   echo json_encode(["error" => "Incorrect password"]);
   exit;

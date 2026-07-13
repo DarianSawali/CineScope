@@ -18,12 +18,14 @@ export default function BookmarksTab() {
   useEffect(() => {
     if (!userId) return
 
+    // Fetch bookmarks from the backend scripts
     fetch(`${BASE_URL}/getBookmarks.php?user_id=${userId}`)
       .then(res => res.json())
       .then(data => setBookmarks(data))
       .catch(err => console.error("Failed to load bookmarks", err))
   }, [userId])
 
+  // Function to handle removing a bookmark
   const handleRemove = async (movieId: number) => {
     try {
       await fetch(`${BASE_URL}/removeFromList.php`, {

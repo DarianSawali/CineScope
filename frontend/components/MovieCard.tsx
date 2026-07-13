@@ -14,6 +14,7 @@ type Props = {
 export default function MovieCard({ id, title, release_date }: Props) {
   const [posterPath, setPosterPath] = useState<string | null>(null)
 
+  // Fetch poster path from TMDb API
   useEffect(() => {
     const fetchPoster = async () => {
       const apiKey = process.env.NEXT_PUBLIC_TMDB_KEY

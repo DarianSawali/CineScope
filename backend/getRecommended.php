@@ -1,4 +1,6 @@
 <?php
+// 'for you' movie recommendations in home page for logged in users
+
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
@@ -11,12 +13,14 @@ if (!$genres) {
   exit;
 }
 
+// explode genre array using ','
 $genre = explode(',', $genres);
 
 // WHERE clause with genres
 $conditions = array_map(fn($g) => "m.genre LIKE ?", $genre);
 $whereClause = implode(" OR ", $conditions);
 
+// select movies that have the same genre as the ones in user preference and ordered by average rating
 $sql = "
   SELECT m.*, ROUND(AVG(r.score), 2) AS average_rating
   FROM movies m
@@ -29,6 +33,7 @@ $sql = "
 
 $stmt = $conn->prepare($sql);
 
+// bind all genres
 $types = str_repeat("s", count($genre));
 $params = array_map(fn($g) => "%$g%", $genre);
 $stmt->bind_param($types, ...$params);

@@ -13,6 +13,7 @@ if (!$movie_id) {
   exit;
 }
 
+// select content(comments), and name of user
 $sql = "SELECT c.content, u.name 
         FROM comments c 
         JOIN users u ON c.user_id = u.id 

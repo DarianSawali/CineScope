@@ -38,8 +38,8 @@ export default function SearchPage() {
   const [selectedLanguage, setSelectedLanguage] = useState('')
 
   useEffect(() => {
+    // Fetch movies from the backend scripts
     const url = new URL(`${BASE_URL}/getSearch.php`)
-    // append parameters to URL for GET function
     if (searchTerm) url.searchParams.append('title', searchTerm)
     if (selectedGenre) url.searchParams.append('genre', selectedGenre)
     if (selectedLanguage) url.searchParams.append('language', selectedLanguage)
@@ -56,7 +56,9 @@ export default function SearchPage() {
         const enriched = await Promise.all(
           limitedData.map(async (movie: any) => {
             let poster_path = ''
+            // Check if the movie has a poster_path
             try {
+              // Fetch poster path from TMDb API
               const tmdbRes = await fetch(
                 `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(movie.title)}&api_key=${TMDB_API_KEY}`
               )
@@ -91,7 +93,6 @@ export default function SearchPage() {
       <h2 className="text-3xl font-bold mb-6 ">Search & Filter Movies</h2>
 
       <div className="py-10 flex flex-col items-center justify-center mb-8">
-        {/* Search Input Group */}
         <div className="relative w-full max-w-xl">
           <input
             type="text"
@@ -101,7 +102,7 @@ export default function SearchPage() {
             className="w-full pl-6 pr-14 py-3 rounded-full bg-transparent text-white placeholder-gray-400 border border-white focus:outline-none"
           />
           <button
-            onClick={() => { }} // You can trigger the search manually here if needed
+            onClick={() => { }} 
             className="absolute right-1 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-full transition duration-300 outline-gray-600 hover:bg-gradient-to-r hover:from-fuchsia-600 hover:to-violet-900"
           >
             <AiOutlineSearch size={24} />
@@ -146,7 +147,7 @@ export default function SearchPage() {
               ))}
             </select>
 
-            {/* Custom dropdown arrow on the right */}
+            {/* dropdown tab */}
             <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -162,10 +163,9 @@ export default function SearchPage() {
         </div>
       </div>
 
-      {/* Movie Cards */}
+      {/* movie cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {movies.map(movie => (
-          // <Link key={movie.id} href={`/movie/${movie.id}`}>
             <MovieCard
               key={movie.id}
               id={movie.id}

@@ -14,6 +14,7 @@ require_once "db.php";
 
 $data = json_decode(file_get_contents("php://input"), true);
 
+// get user id, movie id, and comment content
 $user_id = $data["user_id"] ?? null;
 $movie_id = $data["movie_id"] ?? null;
 $content = $data["content"] ?? '';

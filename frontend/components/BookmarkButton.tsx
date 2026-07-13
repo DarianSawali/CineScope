@@ -23,11 +23,12 @@ export default function BookmarkButton({ movieId, userId }: Props) {
 
   const handleBookmark = async () => {
 
+    // prevents bookmarking if the user is not logged in
     if (!userId) {
       setMessage("You must be logged in to bookmark movies.")
       return
     }
-
+    // Prevent duplicate bookmarking
     if (bookmarked) return
 
     try {

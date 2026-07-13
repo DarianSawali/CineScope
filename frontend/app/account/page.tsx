@@ -5,7 +5,7 @@ import MovieCard from '@/components/MovieCard'
 import BookmarkCard from '@/components/BookmarkCard'
 
 
-// Types
+// provide type for the movie object
 type Movie = {
   id: number
   title: string
@@ -38,17 +38,20 @@ export default function AccountPage() {
     if (id) {
       setUserId(parseInt(id))
 
+      // fetch user data from the backend scripts
       fetch(`${BASE_URL}/getUser.php?id=${id}`)
         .then(res => res.json())
         .then(data => {
           setEmail(data.email || '')
           setUsername(data.name || '')
         })
-
+      
+      // fetch bookmarks from the backend scripts
       fetch(`${BASE_URL}/getBookmarks.php?user_id=${id}`)
         .then(res => res.json())
         .then(data => setBookmarks(data))
 
+      // fetch genre preferences from the backend scripts
       fetch(`${BASE_URL}/getPreference.php?user_id=${id}`)
         .then(res => res.json())
         .then(data => {
@@ -65,10 +68,11 @@ export default function AccountPage() {
     )
   }
 
-  // user genre preference
+  // save genre preferences to the backend scripts
   const handleGenreSave = async () => {
     if (!userId) return
     const genre_preference = selectedGenres.join(',')
+
 
     const res = await fetch(`${BASE_URL}/updatePreference.php`, {
       method: 'POST',
@@ -115,6 +119,7 @@ export default function AccountPage() {
             { label: "Genre Preference", key: "preferences" },
             { label: "Security", key: "security" },
           ].map(tab => (
+            // chekcs if the tab is selected and applies styles accordingly
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
@@ -146,6 +151,7 @@ export default function AccountPage() {
             </div>
           )}
 
+          {/* switches between tabs depending on which is selected */}
           {activeTab === 'bookmarks' && (
             <div>
               <h2 className="text-2xl font-bold mb-4">Your Bookmarked Movies</h2>

@@ -2,13 +2,13 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
-// Include database connection
 require_once "db.php";
 
-// Get user_id and movie_id from GET request
+// GET user_id and movie_id 
 $user_id = $_GET['user_id'] ?? 0;
 $movie_id = $_GET['movie_id'] ?? 0;
 
+// by default, bookmarked = false
 $response = ['bookmarked' => false];
 
 if ($user_id && $movie_id) {
@@ -17,6 +17,7 @@ if ($user_id && $movie_id) {
     $stmt->execute();
     $result = $stmt->get_result();
 
+    // if bookmarked, set bookmark as true
     if ($result && $result->num_rows > 0) {
         $response['bookmarked'] = true;
     }

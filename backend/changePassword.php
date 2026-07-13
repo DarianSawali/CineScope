@@ -14,6 +14,7 @@ require_once 'db.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 
+// extract data
 $user_id = $data['user_id'] ?? '';
 $current_password = $data['current_password'] ?? '';
 $new_password = $data['new_password'] ?? '';
@@ -23,20 +24,20 @@ if (!$user_id || !$current_password || !$new_password) {
   exit;
 }
 
-// Get existing hashed password
+// get existing hashed password
 $stmt = $conn->prepare("SELECT password FROM users WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
 if ($row = $result->fetch_assoc()) {
-  // Validate current password
+  // validate current password
   if (!password_verify($current_password, $row['password'])) {
     echo json_encode(["error" => "Incorrect current password"]);
     exit;
   }
 
-  // Hash and update new password
+  // hash and update new password
   $new_hashed = password_hash($new_password, PASSWORD_DEFAULT);
   $updateStmt = $conn->prepare("UPDATE users SET password = ? WHERE id = ?");
   $updateStmt->bind_param("si", $new_hashed, $user_id);

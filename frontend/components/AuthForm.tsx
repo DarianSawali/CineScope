@@ -21,16 +21,19 @@ const AuthForm = ({ mode }: Props) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
   
+    // Choose the correct endpoint based on mode
     const endpoint =
       mode === "signup"
         ? `${BASE_URL}/signup.php`
         : `${BASE_URL}/login.php`;
   
+    // Payload changes depending on signup or login
     const payload =
       mode === "signup"
         ? { name, email, password }
         : { email, password };
   
+    // send POST request to the backend scripts
     try {
       const res = await fetch(endpoint, {
         method: "POST",

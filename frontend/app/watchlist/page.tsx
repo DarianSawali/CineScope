@@ -19,6 +19,7 @@ export default function WatchlistPage() {
     const id = localStorage.getItem('user_id')
     setUserId(id)
 
+    // Fetch bookmarked movies from the backend scripts
     if (id) {
       fetch(`${BASE_URL}/getBookmarks.php?user_id=${id}`)
         .then(res => res.json())

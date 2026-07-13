@@ -17,11 +17,13 @@ export default function Comments({ movieId }: Props) {
     const id = localStorage.getItem('user_id')
     setUserId(id)
 
+    // Fetch comments for the specific movie
     fetch(`${BASE_URL}/getComments.php?movie_id=${movieId}`)
       .then(res => res.json())
       .then(data => setComments(data))
   }, [movieId])
 
+  // Function to handle posting a new comment
   const handlePost = async () => {
     if (!newComment.trim() || !userId) return
 
@@ -37,6 +39,7 @@ export default function Comments({ movieId }: Props) {
 
     const data = await res.json()
 
+    // Check if the comment was successfully posted
     if (data.success) {
       setComments(prev => [{ name: "You", content: newComment }, ...prev])
       setNewComment("")

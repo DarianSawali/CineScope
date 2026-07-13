@@ -13,11 +13,13 @@ if (!$movie_id) {
     exit;
 }
 
+// sql search for the movie
 $stmt = $conn->prepare("SELECT AVG(score) AS average, COUNT(*) AS count FROM ratings WHERE movie_id = ?");
 $stmt->bind_param("i", $movie_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
+// count = number of reviews in that movie
 if ($row = $result->fetch_assoc()) {
     echo json_encode([
         "average" => round((float)$row['average'], 1),

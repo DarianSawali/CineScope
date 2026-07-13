@@ -19,6 +19,7 @@ export default function Home() {
   const [recommended, setRecommended] = useState<Movie[]>([])
   const [userId, setUserId] = useState<number | null>(null)
 
+  // Fetch movies to display on the home page
   useEffect(() => {
     fetch(`${BASE_URL}/getMovies.php`)
       .then(res => res.json())
@@ -29,6 +30,7 @@ export default function Home() {
     if (id) {
       setUserId(parseInt(id))
   
+      // Fetch user preferences and recommended movies
       fetch(`${BASE_URL}/getPreference.php?user_id=${id}`)
         .then(res => res.json())
         .then(data => {
@@ -65,6 +67,7 @@ export default function Home() {
     </>
   )}
 
+  {/* displays movies and sorts by release date */}
   <h2 className="text-3xl font-bold mb-6">Latest Movies</h2>
   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 py-8">
     {movies
